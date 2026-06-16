@@ -39,3 +39,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 # nextjs-automotive-homePage
 Dynamic luxury automotive website with MongoDB-powered admin content management.
 >>>>>>> 241c56bf3bc6ef8bc5c0200a9417229268db89ea
+
+
+
+
+
