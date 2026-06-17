@@ -1,17 +1,38 @@
- 
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,              // ✅ Allows JavaScript files
-    "strict": true,               // ✅ Strict mode enabled
-    "jsx": "react-jsx",           // React 17+ JSX transform
-    "moduleResolution": "bundler"
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true, // ✅ Allows JavaScript files
+    "strict": true, // ✅ Strict mode enabled
+    "jsx": "react-jsx", // React 17+ JSX transform
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "noEmit": true,
+    "incremental": true,
+    "module": "esnext",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
     "**/*.mts",
-    "app/page.jsx"    // 📌 NOTE: Explicitly includes the JS file!
+    "app/page.jsx" // 📌 NOTE: Explicitly includes the JS file!
+    ,
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

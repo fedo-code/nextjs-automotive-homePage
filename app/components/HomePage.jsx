@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 const stats = [
   { label: "Vehicles Sold", value: "340+" },
@@ -11,26 +12,32 @@ const stats = [
 
 const vehicles = [
   {
+    id: "aether-s-coupe",
     name: "Aether S Coupe",
     category: "Grand Touring",
     price: "$88,900",
-    description: "A sculpted performance coupe with adaptive air suspension and a 3.0L twin-turbo engine.",
+    description:
+      "A sculpted performance coupe with adaptive air suspension and a 3.0L twin-turbo engine.",
     image:
       "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80",
   },
   {
+    id: "velvet-x-suv",
     name: "Velvet X SUV",
     category: "Luxury SUV",
     price: "$104,500",
-    description: "Ultra-luxury comfort, panoramic lounge cabin, and all-wheel-drive confidence for every route.",
+    description:
+      "Ultra-luxury comfort, panoramic lounge cabin, and all-wheel-drive confidence for every route.",
     image:
       "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=900&q=80",
   },
   {
+    id: "nova-gt-r",
     name: "Nova GT R",
     category: "Performance",
     price: "$126,200",
-    description: "Track-bred styling, carbon accents, and a thunderous V8 for refined adrenaline.",
+    description:
+      "Track-bred styling, carbon accents, and a thunderous V8 for refined adrenaline.",
     image:
       "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=900&q=80",
   },
@@ -106,7 +113,14 @@ export default function HomePage() {
                 >
                   PopUp card 
                 </button>
-                <a href="#contact" className="rounded-full border border-white/20 bg-white/8 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/12">Book a Visit</a>
+               <Link
+  href="/book-visit"
+  className="rounded-full border border-white/20 bg-white/8 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/12"
+>
+  Book a Visit
+</Link>
+
+
               </div>
             </div>
 
@@ -152,7 +166,12 @@ export default function HomePage() {
                   <span className="rounded-full border border-amber-400/30 bg-amber-400/10 px-3 py-1 text-sm text-amber-200">{vehicle.price}</span>
                 </div>
                 <p className="text-sm text-zinc-300">{vehicle.description}</p>
-                <button className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-amber-300">View Details</button>
+                <Link
+  href={`/products/${vehicle.id}`}
+  className="inline-block rounded-full bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-amber-300"
+>
+  View Details
+</Link>
               </div>
             </article>
           ))}
