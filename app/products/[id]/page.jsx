@@ -1,127 +1,73 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-
-const vehiclesData = {
-  "aether-s-coupe": {
-    id: "aether-s-coupe",
-    name: "Aether S Coupe",
-    category: "Grand Touring",
-    price: "$88,900",
-    description: "A sculpted performance coupe with adaptive air suspension and a 3.0L twin-turbo engine.",
-    fullDescription: "Experience the pinnacle of grand touring excellence with the Aether S Coupe. Featuring a meticulously crafted exterior, this coupe combines aggressive styling with refined elegance. The adaptive air suspension automatically adjusts to road conditions, while the 3.0L twin-turbo engine delivers exhilarating performance with 425 horsepower.",
-    specs: {
-      engine: "3.0L Twin-Turbo V6",
-      horsepower: "425 HP",
-      torque: "450 lb-ft",
-      topSpeed: "180 mph",
-      acceleration: "0-60 mph in 3.8s",
-      transmission: "8-Speed Automatic",
-      fuelEconomy: "22 city / 28 highway",
-      seating: "4 + 1",
-      warranty: "5 years / 60,000 miles"
-    },
-    images: [
-      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1493238792000-8113da705763?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=900&q=80",
-    ],
-    features: [
-      "Adaptive Air Suspension",
-      "Advanced Traction Control",
-      "Premium Leather Interior",
-      "Panoramic Sunroof",
-      "360-Degree Camera System",
-      "Carbon Fiber Accents",
-      "Heated Seats",
-      "Ambient Lighting"
-    ]
-  },
-  "velvet-x-suv": {
-    id: "velvet-x-suv",
-    name: "Velvet X SUV",
-    category: "Luxury SUV",
-    price: "$104,500",
-    description: "Ultra-luxury comfort, panoramic lounge cabin, and all-wheel-drive confidence for every route.",
-    fullDescription: "Introducing the Velvet X SUV - where opulence meets capability. With its spacious panoramic lounge cabin and cutting-edge all-wheel-drive technology, this SUV redefines luxury travel. Every journey becomes an experience with premium materials and intelligent features designed for discerning drivers.",
-    specs: {
-      engine: "3.5L Twin-Turbo V8",
-      horsepower: "475 HP",
-      torque: "510 lb-ft",
-      topSpeed: "170 mph",
-      acceleration: "0-60 mph in 4.2s",
-      transmission: "9-Speed Automatic",
-      fuelEconomy: "20 city / 26 highway",
-      seating: "7 (with luxury configuration)",
-      warranty: "6 years / 75,000 miles"
-    },
-    images: [
-      "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1493238792000-8113da705763?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1517524206127-48bbd363f3d7?auto=format&fit=crop&w=900&q=80",
-    ],
-    features: [
-      "Panoramic Lounge Cabin",
-      "All-Wheel Drive",
-      "Air Suspension System",
-      "Premium Audio System",
-      "Touchscreen Navigation",
-      "Lane Keeping Assist",
-      "Adaptive Cruise Control",
-      "Heated & Cooled Seats"
-    ]
-  },
-  "nova-gt-r": {
-    id: "nova-gt-r",
-    name: "Nova GT R",
-    category: "Performance",
-    price: "$126,200",
-    description: "Track-bred styling, carbon accents, and a thunderous V8 for refined adrenaline.",
-    fullDescription: "The Nova GT R represents the ultimate expression of performance engineering. With track-inspired aerodynamics, precision-tuned V8 engine, and carbon fiber components, this beast is built for those who demand uncompromising power and agility. Every component is engineered for maximum performance.",
-    specs: {
-      engine: "5.2L Twin-Turbo V8",
-      horsepower: "650 HP",
-      torque: "700 lb-ft",
-      topSpeed: "200+ mph",
-      acceleration: "0-60 mph in 2.9s",
-      transmission: "7-Speed Manual/Automatic",
-      fuelEconomy: "18 city / 24 highway",
-      seating: "2 + 2",
-      warranty: "5 years / 60,000 miles"
-    },
-    images: [
-      "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1493238792000-8113da705763?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1517524206127-48bbd363f3d7?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1489824904134-891ab64532f1?auto=format&fit=crop&w=900&q=80",
-    ],
-    features: [
-      "Carbon Fiber Body Panels",
-      "Race-Tuned Suspension",
-      "Performance Brake System",
-      "Track Mode",
-      "Launch Control",
-      "Recaro Performance Seats",
-      "Roll Cage Integration",
-      "Sport Exhaust System"
-    ]
-  }
-};
+import { useRouter } from "next/navigation";
 
 export default function ProductDetail() {
   const params = useParams();
   const productId = params.id;
-  const vehicle = vehiclesData[productId];
+  const [vehicle, setVehicle] = useState(null);
+  const [isVehicleLoading, setIsVehicleLoading] = useState(true);
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedFeatureIndex, setSelectedFeatureIndex] = useState(0);
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await fetch("/api/auth/me", { credentials: "include" });
+        if (!response.ok) {
+          router.push("/");
+          return;
+        }
+        setIsAuthenticated(true);
+      } catch {
+        router.push("/");
+      }
+    };
+
+    checkAuth();
+  }, [router]);
+
+  useEffect(() => {
+    const loadVehicle = async () => {
+      setIsVehicleLoading(true);
+      try {
+        const response = await fetch(`/api/content/vehicle/${productId}`, {
+          cache: "no-store",
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setVehicle(data.vehicle || null);
+        } else {
+          setVehicle(null);
+        }
+      } catch {
+        setVehicle(null);
+      } finally {
+        setIsVehicleLoading(false);
+      }
+    };
+
+    if (productId) {
+      loadVehicle();
+    }
+  }, [productId]);
+
+  if (isVehicleLoading) {
+    return (
+      <div className="min-h-screen bg-[radial-gradient(circle_at_top,#111827_0%,#06070b_45%,#020304_100%)] text-zinc-100 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-xl text-zinc-300">Loading vehicle...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!vehicle) {
     return (
@@ -136,12 +82,36 @@ export default function ProductDetail() {
     );
   }
 
+  if (isAuthenticated === null) {
+    return (
+      <div className="min-h-screen bg-[radial-gradient(circle_at_top,#111827_0%,#06070b_45%,#020304_100%)] text-zinc-100 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-xl text-zinc-300">Verifying access...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const vehicleImages = Array.isArray(vehicle.images) && vehicle.images.length > 0
+    ? vehicle.images
+    : vehicle.image
+    ? [vehicle.image]
+    : [];
+
   const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % vehicle.images.length);
+    if (vehicleImages.length === 0) {
+      return;
+    }
+
+    setCurrentImageIndex((prev) => (prev + 1) % vehicleImages.length);
   };
 
   const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + vehicle.images.length) % vehicle.images.length);
+    if (vehicleImages.length === 0) {
+      return;
+    }
+
+    setCurrentImageIndex((prev) => (prev - 1 + vehicleImages.length) % vehicleImages.length);
   };
 
   return (
@@ -167,11 +137,17 @@ export default function ProductDetail() {
           <div className="lg:col-span-2">
             <div className="relative group">
               <div className="overflow-hidden rounded-3xl border border-white/10 bg-zinc-950/50 shadow-2xl shadow-black/40">
-                <img
-                  src={vehicle.images[currentImageIndex]}
-                  alt={`${vehicle.name} - View ${currentImageIndex + 1}`}
-                  className="w-full h-96 object-cover"
-                />
+                {vehicleImages.length > 0 ? (
+                  <img
+                    src={vehicleImages[currentImageIndex]}
+                    alt={`${vehicle.name} - View ${currentImageIndex + 1}`}
+                    className="w-full h-96 object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-96 flex items-center justify-center text-zinc-400">
+                    No gallery image available
+                  </div>
+                )}
               </div>
 
               {/* Previous Button */}
@@ -191,14 +167,16 @@ export default function ProductDetail() {
               </button>
 
               {/* Image Counter */}
-              <div className="absolute bottom-4 right-4 bg-black/60 backdrop-blur text-white px-4 py-2 rounded-full text-sm font-semibold">
-                {currentImageIndex + 1} / {vehicle.images.length}
-              </div>
+              {vehicleImages.length > 0 && (
+                <div className="absolute bottom-4 right-4 bg-black/60 backdrop-blur text-white px-4 py-2 rounded-full text-sm font-semibold">
+                  {currentImageIndex + 1} / {vehicleImages.length}
+                </div>
+              )}
             </div>
 
             {/* Thumbnail Gallery */}
             <div className="grid grid-cols-5 gap-3 mt-6">
-              {vehicle.images.map((image, index) => (
+              {vehicleImages.map((image, index) => (
                 <button
                   key={index}
                   onClick={() => setCurrentImageIndex(index)}
@@ -215,6 +193,11 @@ export default function ProductDetail() {
                   />
                 </button>
               ))}
+              {vehicleImages.length === 0 && (
+                <p className="col-span-5 rounded-lg border border-dashed border-white/20 bg-white/5 px-4 py-3 text-sm text-zinc-300">
+                  No gallery photos available for this vehicle.
+                </p>
+              )}
             </div>
 
             {/* Sliding Text Description */}
